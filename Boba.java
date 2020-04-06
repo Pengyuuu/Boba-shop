@@ -10,10 +10,10 @@ public class Boba {
     // powdery, watery, too sweet, not sweet
     private String rateDrink;
 
-    private String reviewer;
-
     // if not perfect; hard, too soft, slimy
     private String rateBoba;
+
+    private String reviewer;
 
     public Boba (String a, String b, String c, String d, String e, String f){
 
@@ -25,9 +25,9 @@ public class Boba {
 
         rateDrink = d;
 
-        reviewer = e;
+        rateBoba = e;
 
-        rateBoba = f;
+        reviewer = f;
     }
 
     public String getName(){
