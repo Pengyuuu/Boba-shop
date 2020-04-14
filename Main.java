@@ -1,8 +1,11 @@
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Main {
 
     public static void main (String[] args){
+    	
+    	ArrayList<Boba> drinks = new ArrayList<>();
 
         boolean begin = true;
 
@@ -18,18 +21,24 @@ public class Main {
 
             if (choice == 1) {
 
-                createReview();
+                Boba drink = createReview();
+                
+                drinks.add(drink);
+                
+                System.out.println(drinks.get(0));
             }
 
             else {
 
                 begin = false;
+                
+                System.out.println("Goodbye! ");
             }
         }
 
     }
 
-    public static void createReview(){
+    public static Boba createReview(){
 
         Scanner scan = new Scanner(System.in);
 
@@ -37,7 +46,7 @@ public class Main {
 
         String name = scan.nextLine();
 
-        System.out.print("\n Name of shop: ");
+        System.out.print("Name of shop: ");
 
         String place = scan.nextLine();
 
@@ -52,6 +61,8 @@ public class Main {
         String person = scan.nextLine();
 
         Boba drink = new Boba(name, place, date, quality, bobaQuality, person);
+        
+        return drink;
     }
 
     public static String createDate() {
@@ -203,4 +214,10 @@ public class Main {
             }
         }
     }
+    /**
+    public static void writeToFile() {
+    	
+    	Scanner 
+    }
+    */
 }

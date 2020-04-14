@@ -15,19 +15,19 @@ public class Boba {
 
     private String reviewer;
 
-    public Boba (String a, String b, String c, String d, String e, String f){
+    public Boba (String name, String place, String date, String rateDrink, String rateBoba, String reviewer){
 
-        name = a;
+        this.name = name;
 
-        place = b;
+        this.place = place;
 
-        date = c;
+        this.date = date;
 
-        rateDrink = d;
+        this.rateDrink = rateDrink;
 
-        rateBoba = e;
+        this.rateBoba = rateBoba;
 
-        reviewer = f;
+        this.reviewer = reviewer;
     }
 
     public String getName(){
@@ -58,6 +58,12 @@ public class Boba {
     public String getRateBoba(){
 
         return rateBoba;
+    }
+    
+    @Override
+    public String toString() {
+    	
+    	return name + ";" + place + ";" + date + ";" + rateDrink + ";" + rateBoba + ";" + reviewer;
     }
 
 }
