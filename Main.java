@@ -10,6 +10,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.*;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.time.*;
 
 public class Main extends Application {
 
@@ -110,6 +111,9 @@ public class Main extends Application {
         // If they click the back button, go back to the main menu
         goBack.setOnAction(e -> primaryStage.setScene(menu));
 
+        createReview.setOnAction(e -> createBoba(drinkInput.getText(), shopInput.getText(), 
+            drinkQualityBox.getValue(), bobaQualityBox.getValue(), reviewerInput.getText()));
+
         // If they click any of the exits, close the program
         exit.setOnAction(e -> exitDisplay("Exit", "Are you sure you want to quit?"));
         exit2.setOnAction(e -> exitDisplay("Exit", "Are you sure you want to quit?"));
@@ -150,65 +154,8 @@ public class Main extends Application {
         exitWindow.showAndWait();
     }
 
-    public static void createReview(){
+    public static ArrayList<Boba> createBoba(String name, String shop, String drinkQuality, String bobaQuality, String reviewer){
 
-        Scanner scan = new Scanner(System.in);
-
-        System.out.print("Name of drink: ");
-
-        String name = scan.nextLine();
-
-        System.out.print("Name of shop: ");
-
-        String place = scan.nextLine();
-
-        String date = createDate();
-
-        System.out.print("Who is reviewing this drink: ");
-
-        String person = scan.nextLine();
-    }
-
-    public static String createDate() {
-
-        Scanner scan = new Scanner(System.in);
-
-        System.out.print("Month (01-12): ");
-
-        String month = scan.nextLine();
-
-        while (month.length() < 2 || month.length() > 3) {
-
-            System.out.print("Incorrect format. Try again \n" +
-                    "Month (01-12): ");
-
-            month = scan.nextLine();
-        }
-
-        System.out.print("Day (00): ");
-
-        String day = scan.nextLine();
-
-        while (day.length() < 2 || day.length() > 2) {
-
-            System.out.print("Incorrect format. Try again \n" +
-                    "Day (00): ");
-
-            day = scan.nextLine();
-        }
-
-        System.out.print("Year (0000): ");
-
-        String year = scan.nextLine();
-
-        while (year.length() < 4 || year.length() > 4) {
-
-            System.out.print("Incorrect format. Try again \n" +
-                    "Year (0000): ");
-
-            year = scan.nextLine();
-        }
-
-        return month + "/" + day + "/" + year;
+        Boba boba = new Boba(name, shop, java.time.LocalDate.now().toString(), drinkQuality, bobaQuality, reviewer);
     }
 }
