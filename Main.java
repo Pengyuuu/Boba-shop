@@ -24,6 +24,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        ArrayList<Boba> drinks = new ArrayList<>();
 
         // Title of the window
         primaryStage.setTitle("Boba Reviewer");
@@ -112,7 +113,7 @@ public class Main extends Application {
         goBack.setOnAction(e -> primaryStage.setScene(menu));
 
         createReview.setOnAction(e -> createBoba(drinkInput.getText(), shopInput.getText(), 
-            drinkQualityBox.getValue(), bobaQualityBox.getValue(), reviewerInput.getText()));
+            drinkQualityBox.getValue(), bobaQualityBox.getValue(), reviewerInput.getText(), drinks));
 
         // If they click any of the exits, close the program
         exit.setOnAction(e -> exitDisplay("Exit", "Are you sure you want to quit?"));
@@ -154,8 +155,10 @@ public class Main extends Application {
         exitWindow.showAndWait();
     }
 
-    public static ArrayList<Boba> createBoba(String name, String shop, String drinkQuality, String bobaQuality, String reviewer){
+    public static ArrayList<Boba> createBoba(String name, String shop, String drinkQuality, String bobaQuality, String reviewer, ArrayList<Boba> drinks){
 
-        Boba boba = new Boba(name, shop, java.time.LocalDate.now().toString(), drinkQuality, bobaQuality, reviewer);
+        drinks.add(new Boba(name, shop, java.time.LocalDate.now().toString(), drinkQuality, bobaQuality, reviewer));
+
+        return drinks;
     }
 }
