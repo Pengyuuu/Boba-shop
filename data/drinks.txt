@@ -1,0 +1,6 @@
+Honey Milk Tea;Ding Tea;2020-12-31;5. Perfect;4. Perfect;Eric
+Okinawa Milk Tea;Sharetea;2020-12-31;3. Sweet;2. Too Soft;Sam
+Wintermelon Milk Tea;Ding Tea;2020-12-31;5. Perfect;4. Perfect;Kevin
+Green Milk Tea;Tea Station;2020-12-31;5. Perfect;4. Perfect;Eric
+Green Milk Tea;Ding Tea;2020-12-31;5. Perfect;4. Perfect;Eric
+Honey Milk Tea;Tea Station;2020-12-31;3. Sweet;3. Slimy;Eric

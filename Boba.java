@@ -73,7 +73,7 @@ public class Boba {
     @Override
     public String toString() {
     	
-    	return name + ";" + place + ";" + date + ";" + rateDrink + ";" + rateBoba + ";" + reviewer;
+    	return name + " " + place + " " + date + " " + rateDrink + " " + rateBoba + " " + reviewer;
     }
 
 }

@@ -10,7 +10,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.*;
 import java.util.Scanner;
 import java.util.ArrayList;
-import java.time.*;
+import java.io.*;
+import java.nio.file.*;
 
 public class Main extends Application {
 
@@ -24,7 +25,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        ArrayList<Boba> drinks = new ArrayList<>();
+        ArrayList<Boba> drinks = readBoba();
 
         // Title of the window
         primaryStage.setTitle("Boba Reviewer");
@@ -36,7 +37,9 @@ public class Main extends Application {
         Button createReview = new Button("Create a Review");
         Button goBack = new Button("Back");
         Button createObject = new Button("Create");
-        
+        Button viewAndEdit = new Button ("View/Edit");
+        Button delete = new Button("Delete");
+        Button viewAndEditBack = new Button("Back");
 
         /**
         StackPane layout = new StackPane();
@@ -51,7 +54,7 @@ public class Main extends Application {
 
         // Creates a box for the main menu
         VBox mainMenu = new VBox(10);
-        mainMenu.getChildren().addAll(createReview, exit2);
+        mainMenu.getChildren().addAll(createReview, viewAndEdit, exit2);
         mainMenu.setAlignment(Pos.CENTER);
 
         // Stuff in the create review window
@@ -98,10 +101,22 @@ public class Main extends Application {
         reviewWindow.setCenter(reviewFields);
         reviewWindow.setBottom(reviewFieldsOptions);
 
+        // Page to hold View/Edit options
+        BorderPane viewEditWindow = new BorderPane();
+        ListView<String> listView = new ListView<>();
+        populateList(drinks, listView);
+        listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        viewEditWindow.setCenter(listView);
+
+        HBox viewAndEditOptions = new HBox(30);
+        viewAndEditOptions.getChildren().addAll(delete, viewAndEditBack);
+        viewEditWindow.setBottom(viewAndEditOptions);
+
         // Creates the windows with the boxes
         Scene program = new Scene(loginMenu, 500, 500);
         Scene menu = new Scene(mainMenu, 500, 500);
         Scene review = new Scene(reviewWindow, 500, 500);
+        Scene viewEdit = new Scene(viewEditWindow, 500, 500);
 
         // When they click the enter button, go to the main window
         login.setOnAction(e -> primaryStage.setScene(menu));
@@ -109,16 +124,30 @@ public class Main extends Application {
         // When they click create a review, go to the review creation page
         createReview.setOnAction(e -> primaryStage.setScene(review));
 
+        // When they click View/Edit, go to the data page
+        viewAndEdit.setOnAction(e -> primaryStage.setScene(viewEdit));
+
         // If they click the back button, go back to the main menu
         goBack.setOnAction(e -> primaryStage.setScene(menu));
+        viewAndEditBack.setOnAction(e -> primaryStage.setScene(menu));
 
-        createReview.setOnAction(e -> createBoba(drinkInput.getText(), shopInput.getText(), 
-            drinkQualityBox.getValue(), bobaQualityBox.getValue(), reviewerInput.getText(), drinks));
+        createObject.setOnAction(e -> {
+            createBoba(drinkInput.getText(), shopInput.getText(), 
+            drinkQualityBox.getValue(), bobaQualityBox.getValue(), reviewerInput.getText(), drinks);
+            listView.getItems().clear();
+            populateList(drinks, listView);
+            drinkInput.clear();
+            shopInput.clear();
+            drinkQualityBox.hide();
+            bobaQualityBox.hide();
+            reviewerInput.clear();
+            primaryStage.setScene(menu);
+        });
 
         // If they click any of the exits, close the program
-        exit.setOnAction(e -> exitDisplay("Exit", "Are you sure you want to quit?"));
-        exit2.setOnAction(e -> exitDisplay("Exit", "Are you sure you want to quit?"));
-        primaryStage.setOnCloseRequest(e -> exitDisplay("Exit", "Are you sure you want to quit?"));
+        exit.setOnAction(e -> exitDisplay("Exit", "Are you sure you want to quit?", drinks));
+        exit2.setOnAction(e -> exitDisplay("Exit", "Are you sure you want to quit?", drinks));
+        primaryStage.setOnCloseRequest(e -> exitDisplay("Exit", "Are you sure you want to quit?", drinks));
 
         // The login window shows first
         primaryStage.setScene(program);
@@ -127,7 +156,7 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-    public static void exitDisplay(String title, String message) {
+    public static void exitDisplay(String title, String message, ArrayList<Boba> drinks) {
 
         Stage exitWindow = new Stage();
 
@@ -141,7 +170,10 @@ public class Main extends Application {
         Button yesButton = new Button("Yes");
         Button noButton = new Button("No");
 
-        yesButton.setOnAction(e -> System.exit(0));
+        yesButton.setOnAction(e -> {
+            writeBoba(drinks);
+            System.exit(0);
+        });
         noButton.setOnAction(e -> exitWindow.close());
 
         HBox buttonLayout = new HBox(10);
@@ -160,5 +192,63 @@ public class Main extends Application {
         drinks.add(new Boba(name, shop, java.time.LocalDate.now().toString(), drinkQuality, bobaQuality, reviewer));
 
         return drinks;
+    }
+
+    public static ArrayList<Boba> readBoba() {
+
+        ArrayList<Boba> drinks = new ArrayList<>();
+
+        try {
+
+            Scanner read = new Scanner(new File("/Users/pengu/OneDrive/Documents/Java/Boba-shop/src/data/drinks.txt"));
+
+            while (read.hasNext()) {
+
+                String line = read.nextLine();
+
+                String[] tokens = line.split(";");
+
+                System.out.println(tokens.length);
+
+                for (String i : tokens) {
+
+                    System.out.println(i);
+                }
+
+                drinks.add(new Boba(tokens[0], tokens[1], tokens[2], tokens[3], tokens[4], tokens[5]));
+            }
+        } catch (FileNotFoundException fnf) {
+
+            System.out.println("File not found");
+        }
+
+        return drinks;
+    }
+
+    public static void writeBoba(ArrayList<Boba> drinks) {
+
+        try {
+
+            PrintWriter writer = new PrintWriter("/Users/pengu/OneDrive/Documents/Java/Boba-shop/src/data/drinks.txt");
+
+            for (Boba i : drinks) {
+
+                writer.write(i.getName() + ";" + i.getPlace() + ";" + i.getDate() + ";" + i.getRateDrink() + 
+                    ";" + i.getRateBoba() + ";" + i.getReviewer() + "\n");
+            }
+            
+            writer.close();
+        } catch (FileNotFoundException fnf) {
+
+            System.out.println("File not found");
+        }
+    }
+
+    public static void populateList(ArrayList<Boba> drinks, ListView<String> listView) {
+
+        for (Boba i : drinks) {
+
+            listView.getItems().add(i.toString());
+        }
     }
 }
