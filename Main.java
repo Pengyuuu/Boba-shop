@@ -103,11 +103,18 @@ public class Main extends Application {
 
         // Page to hold View/Edit options
         BorderPane viewEditWindow = new BorderPane();
+
+        // Create a list view to display the data
         ListView<String> listView = new ListView<>();
         populateList(drinks, listView);
-        listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+        // Allow the user to select multiple rows of data
+        listView.getSelectionModel();
+
+        // Put it in the center of the border pane
         viewEditWindow.setCenter(listView);
 
+        // Place for the buttons
         HBox viewAndEditOptions = new HBox(30);
         viewAndEditOptions.getChildren().addAll(delete, viewAndEditBack);
         viewEditWindow.setBottom(viewAndEditOptions);
@@ -132,18 +139,24 @@ public class Main extends Application {
         viewAndEditBack.setOnAction(e -> primaryStage.setScene(menu));
 
         createObject.setOnAction(e -> {
+            // Create a new review
             createBoba(drinkInput.getText(), shopInput.getText(), 
             drinkQualityBox.getValue(), bobaQualityBox.getValue(), reviewerInput.getText(), drinks);
+
+            // Clear the list and then update it
             listView.getItems().clear();
             populateList(drinks, listView);
+            
+            // clear the text fields
             drinkInput.clear();
             shopInput.clear();
-            drinkQualityBox.hide();
-            bobaQualityBox.hide();
             reviewerInput.clear();
+
+            // Send user back to main menu
             primaryStage.setScene(menu);
         });
 
+        delete.setOnAction(e -> {deleteItem(drinks, listView);});
         // If they click any of the exits, close the program
         exit.setOnAction(e -> exitDisplay("Exit", "Are you sure you want to quit?", drinks));
         exit2.setOnAction(e -> exitDisplay("Exit", "Are you sure you want to quit?", drinks));
@@ -208,13 +221,6 @@ public class Main extends Application {
 
                 String[] tokens = line.split(";");
 
-                System.out.println(tokens.length);
-
-                for (String i : tokens) {
-
-                    System.out.println(i);
-                }
-
                 drinks.add(new Boba(tokens[0], tokens[1], tokens[2], tokens[3], tokens[4], tokens[5]));
             }
         } catch (FileNotFoundException fnf) {
@@ -246,9 +252,22 @@ public class Main extends Application {
 
     public static void populateList(ArrayList<Boba> drinks, ListView<String> listView) {
 
-        for (Boba i : drinks) {
+        for (int i = 0; i < drinks.size(); i++) {
 
-            listView.getItems().add(i.toString());
+            listView.getItems().add((i + 1) + ". " + drinks.get(i).toString());
         }
+    }
+
+    public static ArrayList<Boba> deleteItem(ArrayList<Boba> drinks, ListView<String> listView) {
+
+        int item;
+        item = Integer.parseInt(listView.getSelectionModel().getSelectedItem().substring(0, 1)) - 1;
+        
+        drinks.remove(item);
+
+        listView.getItems().clear();
+        populateList(drinks, listView);
+
+        return drinks;
     }
 }
