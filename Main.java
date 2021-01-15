@@ -213,7 +213,7 @@ public class Main extends Application {
 
         try {
 
-            Scanner read = new Scanner(new File("/Users/pengu/OneDrive/Documents/Java/Boba-shop/src/data/drinks.txt"));
+            Scanner read = new Scanner(new File("drinks.txt"));
 
             while (read.hasNext()) {
 
@@ -235,7 +235,7 @@ public class Main extends Application {
 
         try {
 
-            PrintWriter writer = new PrintWriter("/Users/pengu/OneDrive/Documents/Java/Boba-shop/src/data/drinks.txt");
+            PrintWriter writer = new PrintWriter("drinks.txt");
 
             for (Boba i : drinks) {
 
